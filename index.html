@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Captioning</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Additional CSS for image preview */
+        .result-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mt-4">Image Captioning</h1>
+        <form action="/predict" method="post" enctype="multipart/form-data" class="mt-4">
+            <div class="form-group">
+                <input type="file" name="file" accept="image/*" required class="form-control-file" id="image-input">
+            </div>
+            <h3>Image Preview:</h3>
+            <div id="image-preview-container" style="display: none;">
+                <img src="" alt="Uploaded Image" id="result-image-preview" class="result-image">
+            </div>
+            <button type="submit" class="btn btn-primary">Generate Caption</button>
+        </form>
+        {% if prediction %}
+        <div class="mt-4">
+            <h3>Prediction Result:</h3>
+            <p>{{ prediction }}</p>
+        </div>
+        <script>
+            // JavaScript for image preview
+            document.getElementById('image-input').addEventListener('change', function() {
+                var input = this;
+                var imagePreview = document.getElementById('result-image-preview');
+                var imagePreviewContainer = document.getElementById('image-preview-container');
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreviewContainer.style.display = "block";
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+        </script>
+        {% endif %}
+    </div>
+    <!-- Add Bootstrap JS and jQuery (required for image preview) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
